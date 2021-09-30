@@ -25,6 +25,7 @@ const calcCash = (own) => {
 }
 
 const lesson = calcCash(cash);
+console.log('asd');
 
 const makeBusiness = ([director, teacher, allModule, gang, course]) => {
   teacher = teacher || 'Максим';
