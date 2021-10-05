@@ -1,14 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import img from '../../image/fast-food.svg';
-import userImg from '../../image/user.svg';
+import img from '../image/fast-food.svg';
+import userImg from '../image/user.svg';
 
 const HeaderStyle = styled.header`
   padding: 11px 25px 18px 15px;
   background-color: #299B01;
+`;
+
+const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1440px;
+  margin: 0 auto;
 `;
 
 const Logo = styled.a`
@@ -48,11 +53,13 @@ const Button = styled.a`
 const Header = () => {
   return (
     <HeaderStyle>
-      <Logo href="#">
-        <img src={img} alt="logotype" />
-        <Span>MRDonald’s</Span>
-      </Logo>
-      <Button href="#">войти</Button>
+      <Container>
+        <Logo href="#">
+          <img src={img} alt="logotype" />
+          <Span>MRDonald’s</Span>
+        </Logo>
+        <Button href="#">войти</Button>
+      </Container>
     </HeaderStyle>
   );
 };
