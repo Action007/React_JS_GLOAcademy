@@ -18,6 +18,7 @@ const Li = styled.li`
   padding: 10px 15px;
   margin: 0 10px 30px;
   overflow: hidden;
+  cursor: pointer;
   color: #fff;
   z-index: 1;
   
@@ -64,11 +65,14 @@ const Price = styled.span`
   z-index: 3;
 `;
 
-const ContentItems = ({ items }) => {
+const ContentItems = ({ items, setOpenItem }) => {
   return (
     <Ul>
       {items.map(item => (
-        <Li key={item.id} img={item.img}>
+        <Li
+          key={item.id}
+          img={item.img}
+          onClick={() => setOpenItem(item)}>
           <Name>{item.name}</Name>
           <Price>
             {item.price.toLocaleString('ru-RU',

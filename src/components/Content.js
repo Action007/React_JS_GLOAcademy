@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import bannerImg from '../image/banner.jpg';
 import ContentItems from './ContentItems';
+import Order from './Order';
 import dbMenu from './DBMenu';
 
 const Main = styled.main`
@@ -9,6 +10,10 @@ const Main = styled.main`
   justify-content: flex-end;
   max-width: 1440px;
   margin: 0 auto;
+`;
+
+const Section = styled.section`
+  width: 100%;
 `;
 
 const Banner = styled.div`
@@ -29,16 +34,21 @@ const Head = styled.h2`
   margin-bottom: 10px;
 `;
 
-const Content = () => {
+const Content = ({ setOpenItem }) => {
   return (
     <Main>
-      <section>
+      <Order />
+      <Section>
         <Banner></Banner>
         <Head>Бургеры</Head>
-        <ContentItems items={dbMenu.burger} />
+        <ContentItems
+          items={dbMenu.burger}
+          setOpenItem={setOpenItem} />
         <Head>Закуски / Напитки</Head>
-        <ContentItems items={dbMenu.other} />
-      </section>
+        <ContentItems
+          items={dbMenu.other}
+          setOpenItem={setOpenItem} />
+      </Section>
     </Main>
   );
 };
