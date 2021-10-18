@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './Button';
+import Button from '../Button';
+import { formatCurrency } from '../Functions/formatCurrency';
+import { totalPriceItems } from '../Functions/secondaryFunction';
+import UseCount from '../Hooks/UseCount';
+import CountItem from './CountItem';
 
 const Overlay = styled.div`
   display: flex;
@@ -46,12 +50,24 @@ const Inner = styled.div`
   font-size: 30px;
 `;
 
-const ButtonWrap = styled.button`
+const ButtonWrap = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-const ModelItem = ({ openItem, setOpenItem }) => {
+const TotalPriceItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
+
+  const counter = UseCount();
+
+  const order = {
+    ...openItem,
+    count: counter.count
+  };
 
   const closeModal = (e) => {
     if (e.target.id === 'overlay') {
@@ -59,7 +75,10 @@ const ModelItem = ({ openItem, setOpenItem }) => {
     }
   };
 
-  if (!openItem) return null;
+  const addToOrder = () => {
+    setOrders([...orders, order]);
+    setOpenItem(null);
+  };
 
   return (
     <Overlay id="overlay" onClick={closeModal}>
@@ -69,17 +88,23 @@ const ModelItem = ({ openItem, setOpenItem }) => {
           <Inner>
             <span>{openItem.name}</span>
             <span>
-              {openItem.price.toLocaleString('ru-RU',
-                { style: 'currency', currency: 'rub' })}
+              {formatCurrency(openItem.price)}
             </span>
           </Inner>
-          <ButtonWrap>
-            <Button>Добавить</Button>
+          <CountItem {...counter} />
+          <TotalPriceItem>
+            <span>Цена</span>
+            <span>{totalPriceItems(order).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</span>
+          </TotalPriceItem>
+          <ButtonWrap >
+            <Button onClick={addToOrder}>
+              Добавить
+            </Button>
           </ButtonWrap>
         </Wrapper>
       </Modal>
-    </Overlay>
+    </Overlay >
   );
 };
 
-export default ModelItem;
+export default ModalItem;

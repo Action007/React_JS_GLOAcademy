@@ -2,17 +2,20 @@ import React from 'react';
 import Header from '../Header';
 import ResetCss from './ResetCss';
 import Content from '../Content';
-import ModelItem from '../ModelItem';
+import ModalItem from '../Modal/ModalItem';
+import UseOpenItem from '../Hooks/UseOpenItem';
+import UseOrders from '../Hooks/UseOrders';
 
 const App = () => {
-  const [openItem, setOpenItem] = React.useState(null);
+  const openItem = UseOpenItem();
+  const orders = UseOrders();
 
   return (
     <React.Fragment>
       <ResetCss />
       <Header />
-      <Content setOpenItem={setOpenItem} />
-      <ModelItem openItem={openItem} setOpenItem={setOpenItem} />
+      <Content {...openItem} orders={orders} />
+      {openItem.openItem && <ModalItem {...openItem} {...orders} />}
     </React.Fragment>
   );
 };

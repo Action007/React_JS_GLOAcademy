@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './Button';
+import Button from '../Button';
+import { formatCurrency } from '../Functions/formatCurrency';
+import { totalPriceItems } from '../Functions/secondaryFunction';
 import OrderListItem from './OrderListItem';
 
 const OrderStyled = styled.section`
@@ -41,22 +43,34 @@ const TotalPrice = styled.span`
   margin-left: 20px;
 `;
 
-const Order = () => {
+const Empty = styled.div`
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 100px;
+`;
+
+
+const Order = ({ orders }) => {
+
+  const total = orders.reduce((res, order) =>
+    totalPriceItems(order) + res, 0);
 
   return (
     <OrderStyled>
       <OrderTitle>ВАШ ЗАКАЗ</OrderTitle>
       <div>
-        <OrderList>
-          <OrderListItem />
-          <OrderListItem />
-          <OrderListItem />
-        </OrderList>
+        {orders.length
+          ?
+          <OrderList>
+            {orders.map(order => <OrderListItem order={order} />)}
+          </OrderList>
+          :
+          <Empty>Список заказов пуст</Empty>}
       </div>
       <Total>
         <span>Itoqo</span>
         <span>5</span>
-        <TotalPrice>850rub</TotalPrice>
+        <TotalPrice>{formatCurrency(total)}</TotalPrice>
       </Total>
       <Button>Оформить</Button>
     </OrderStyled>

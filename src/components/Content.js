@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import bannerImg from '../image/banner.jpg';
 import ContentItems from './ContentItems';
-import Order from './Order';
+import Order from './Order/Order';
 import dbMenu from './DBMenu';
 
 const Main = styled.main`
@@ -34,10 +34,10 @@ const Head = styled.h2`
   margin-bottom: 10px;
 `;
 
-const Content = ({ setOpenItem }) => {
+const Content = ({ setOpenItem, orders }) => {
   return (
     <Main>
-      <Order />
+      <Order {...orders} />
       <Section>
         <Banner></Banner>
         <Head>Бургеры</Head>
