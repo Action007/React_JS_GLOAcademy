@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const UseCount = () => {
-  const [count, setCount] = useState(1);
+const UseCount = (amount) => {
+  const [count, setCount] = useState(amount || 1);
 
   const onChange = (e) => setCount(e.target.value);
 

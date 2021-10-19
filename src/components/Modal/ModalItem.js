@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import Button from '../Button';
 import { formatCurrency } from '../Functions/formatCurrency';
 import { totalPriceItems } from '../Functions/secondaryFunction';
+import { UseChoices } from '../Hooks/UseChoices';
 import UseCount from '../Hooks/UseCount';
+import { UseToppings } from '../Hooks/UseToppings';
+import Choices from './Choices';
 import CountItem from './CountItem';
+import Toppings from './Toppings';
 
 const Overlay = styled.div`
   display: flex;
@@ -23,6 +27,7 @@ const Modal = styled.div`
   background-color: #fff;
   width: 600px;
   height: 600px;
+  font-size: 22px;
 `;
 
 const Banner = styled.div`
@@ -62,11 +67,25 @@ const TotalPriceItem = styled.div`
 
 const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
 
-  const counter = UseCount();
+  const counter = UseCount(openItem.count);
+  const toppings = UseToppings(openItem);
+  const choices = UseChoices(openItem);
+  const isEdit = openItem.index > -1;
+
+
 
   const order = {
     ...openItem,
-    count: counter.count
+    count: counter.count,
+    topping: toppings.toppings,
+    choice: choices.choice,
+  };
+
+  const editOrder = () => {
+    const newOrders = [...orders];
+    newOrders[openItem.index] = order;
+    setOrders(newOrders);
+    setOpenItem(null);
   };
 
   const closeModal = (e) => {
@@ -92,13 +111,23 @@ const ModalItem = ({ openItem, setOpenItem, orders, setOrders }) => {
             </span>
           </Inner>
           <CountItem {...counter} />
+          {openItem.toppings &&
+            <Toppings {...toppings} />}
+          {openItem.choices &&
+            <Choices
+              {...choices}
+              openItem={openItem}
+            />}
           <TotalPriceItem>
             <span>Цена</span>
             <span>{totalPriceItems(order).toLocaleString('ru-RU', { style: 'currency', currency: 'RUB' })}</span>
           </TotalPriceItem>
           <ButtonWrap >
-            <Button onClick={addToOrder}>
-              Добавить
+            <Button
+              onClick={isEdit ? editOrder : addToOrder}
+              disabled={order.choices && !order.choice}
+            >
+              {isEdit ? 'Редактировать' : 'Добавить'}
             </Button>
           </ButtonWrap>
         </Wrapper>

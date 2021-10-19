@@ -50,10 +50,20 @@ const Empty = styled.div`
 `;
 
 
-const Order = ({ orders }) => {
+const Order = ({ orders, setOrders, setOpenItem }) => {
+
+  const deleteItem = (index) => {
+    const newOrder = orders.filter((item, i) =>
+      i !== index
+    );
+    setOrders(newOrder);
+  };
 
   const total = orders.reduce((res, order) =>
     totalPriceItems(order) + res, 0);
+
+  const totalCounter = orders.reduce((res, order) =>
+    order.count + res, 0);;
 
   return (
     <OrderStyled>
@@ -62,14 +72,21 @@ const Order = ({ orders }) => {
         {orders.length
           ?
           <OrderList>
-            {orders.map(order => <OrderListItem order={order} />)}
+            {orders.map((order, index) =>
+              <OrderListItem
+                key={index}
+                order={order}
+                deleteItem={deleteItem}
+                index={index}
+                setOpenItem={setOpenItem}
+              />)}
           </OrderList>
           :
           <Empty>Список заказов пуст</Empty>}
       </div>
       <Total>
-        <span>Itoqo</span>
-        <span>5</span>
+        <span>Итого</span>
+        <span>{totalCounter}</span>
         <TotalPrice>{formatCurrency(total)}</TotalPrice>
       </Total>
       <Button>Оформить</Button>

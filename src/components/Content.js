@@ -37,7 +37,7 @@ const Head = styled.h2`
 const Content = ({ setOpenItem, orders }) => {
   return (
     <Main>
-      <Order {...orders} />
+      <Order {...orders} setOpenItem={setOpenItem} />
       <Section>
         <Banner></Banner>
         <Head>Бургеры</Head>
