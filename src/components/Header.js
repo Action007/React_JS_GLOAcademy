@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import img from '../image/fast-food.svg';
 import userImg from '../image/user.svg';
+import { Context } from './Functions/context';
 
 const HeaderStyle = styled.header`
   padding: 11px 25px 18px 15px;
@@ -28,7 +29,7 @@ const Span = styled.span`
   color: #fff;
 `;
 
-const Button = styled.a`
+const Button = styled.button`
   position: relative;
   padding-top: 35px;
   font-family: Roboto;
@@ -51,6 +52,8 @@ const Button = styled.a`
 `;
 
 const Header = () => {
+  const { auth: { authentication, logIn, logOut } } = useContext(Context);
+
   return (
     <HeaderStyle>
       <Container>
@@ -58,7 +61,13 @@ const Header = () => {
           <img src={img} alt="logotype" />
           <Span>MRDonald’s</Span>
         </Logo>
-        <Button href="#">войти</Button>
+        {authentication
+          ? <Button onClick={logOut} type="button">
+            выйти
+          </Button>
+          : <Button onClick={logIn} type="button">
+            войти
+          </Button>}
       </Container>
     </HeaderStyle>
   );

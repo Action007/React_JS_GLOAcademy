@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import bannerImg from '../image/banner.jpg';
 import ContentItems from './ContentItems';
 import Order from './Order/Order';
-import dbMenu from './DBMenu';
+import { UseFetch } from './Hooks/UseFetch';
+import { Context } from './Functions/context';
 
 const Main = styled.main`
   display: flex;
@@ -34,21 +35,54 @@ const Head = styled.h2`
   margin-bottom: 10px;
 `;
 
-const Content = ({ setOpenItem, orders }) => {
+const Load = styled.div`
+  margin-top: 40px;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  font-family: Pacifico;
+  font-size: 32px;
+`;
+
+const Error = styled.div`
+margin-top: 40px;
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 32px;
+  color: red;
+`;
+
+const Content = ({ orders, auth, orderConfirm }) => {
+
+  const { openItem: { setOpenItem } } = useContext(Context);
+  const res = UseFetch();
+  const dbMenu = res.response;
+
   return (
     <Main>
-      <Order {...orders} setOpenItem={setOpenItem} />
-      <Section>
-        <Banner></Banner>
-        <Head>Бургеры</Head>
-        <ContentItems
-          items={dbMenu.burger}
-          setOpenItem={setOpenItem} />
-        <Head>Закуски / Напитки</Head>
-        <ContentItems
-          items={dbMenu.other}
-          setOpenItem={setOpenItem} />
-      </Section>
+      <Order
+        {...orders}
+        setOpenItem={setOpenItem}
+        {...auth}
+        {...orderConfirm}
+      />
+      {dbMenu
+        ? <Section>
+          <Banner></Banner>
+          <Head>Бургеры</Head>
+          <ContentItems
+            items={dbMenu.burger}
+            setOpenItem={setOpenItem} />
+          <Head>Закуски / Напитки</Head>
+          <ContentItems
+            items={dbMenu.other}
+            setOpenItem={setOpenItem} />
+        </Section>
+        : res.error
+          ? <Error>Error</Error>
+          : <Load>Loading...</Load>
+      }
     </Main>
   );
 };

@@ -10,7 +10,7 @@ import Choices from './Choices';
 import CountItem from './CountItem';
 import Toppings from './Toppings';
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,7 +55,7 @@ const Inner = styled.div`
   font-size: 30px;
 `;
 
-const ButtonWrap = styled.div`
+export const ButtonWrap = styled.div`
   display: flex;
   justify-content: center;
 `;

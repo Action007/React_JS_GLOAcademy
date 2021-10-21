@@ -18,7 +18,7 @@ const OrderStyled = styled.section`
   font-size: 20px;
 `;
 
-const OrderTitle = styled.h2`
+export const OrderTitle = styled.h2`
   margin-bottom: 30px; 
   text-align: center;
   font-family: Pacifico;
@@ -29,7 +29,7 @@ const OrderList = styled.ul`
   margin-bottom: 100px;
 `;
 
-const Total = styled.div`
+export const Total = styled.div`
   display: flex;
   margin-bottom: 35px;
   & span:first-child {
@@ -37,7 +37,7 @@ const Total = styled.div`
   }
 `;
 
-const TotalPrice = styled.span`
+export const TotalPrice = styled.span`
   text-align: right;
   min-width: 65px;
   margin-left: 20px;
@@ -49,8 +49,14 @@ const Empty = styled.div`
   margin-bottom: 100px;
 `;
 
-
-const Order = ({ orders, setOrders, setOpenItem }) => {
+const Order = ({
+  orders,
+  setOrders,
+  setOpenItem,
+  authentication,
+  logIn,
+  setOpenOrderConfirm
+}) => {
 
   const deleteItem = (index) => {
     const newOrder = orders.filter((item, i) =>
@@ -89,8 +95,14 @@ const Order = ({ orders, setOrders, setOpenItem }) => {
         <span>{totalCounter}</span>
         <TotalPrice>{formatCurrency(total)}</TotalPrice>
       </Total>
-      <Button>Оформить</Button>
-    </OrderStyled>
+      <Button onClick={() => {
+        if (orders.length) {
+          authentication
+            ? setOpenOrderConfirm(true)
+            : logIn()
+        }
+      }}>Оформить</Button>
+    </OrderStyled >
   );
 };
 
